@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.event.ActionEvent;
 
-import javax.swing.*;
+
 
 public class JFXEventDemo extends Application {
     public static void main(String[] args) {
@@ -37,7 +37,7 @@ public class JFXEventDemo extends Application {
                 lbText.setText("Alpha была нажата");
             }
         });
-        btBeta.setOnAction(event -> lbText.setText("Beta была нажата"));
+        btBeta.setOnAction((ae)-> lbText.setText("Beta была нажата"));
         Button btClose = new Button("Close");
         btClose.setOnAction(this::methodClose);
         rootNode.getChildren().addAll(hLineNode, lbText, btClose);
