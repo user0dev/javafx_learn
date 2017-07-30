@@ -23,7 +23,7 @@ public class Main {
         try {
             conn =
                     DriverManager.getConnection("jdbc:mysql://localhost/test?" +
-                            "user=minty&password=greatsqldb");
+                            "user=minty&password=greatsqldb&useSSL=false");
 
             // Do something with the Connection
 
