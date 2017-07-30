@@ -2,4 +2,5 @@
 /JFXBookExample/build/
 /JFXDrawHome/nbproject/private/
 /JFXDrawHome/build/
-JFXBookExample/.idea
+/JFXBookExample/out/
+/JFXBookExample/.idea/
