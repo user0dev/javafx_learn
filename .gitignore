@@ -6,3 +6,5 @@
 /JFXBookExample/.idea/
 /*/.idea/
 /*/out/
+/*/build/
+/*/nbproject/private/
