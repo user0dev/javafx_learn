@@ -30,8 +30,10 @@ public class JFXComboBox extends Application {
         ComboBox<String> cb = new ComboBox<String>(FXCollections.observableArrayList("Машина", "Велосипед",
                 "Автобус", "Пешком"));
         cb.setEditable(true);
+        cb.setPromptText("Введите пункт в список");
         TextField tf = new TextField();
-        Button button = new Button("ComboBox<>.setValue()");
+        tf.setPromptText("Будет введено в список");
+        Button button = new Button(String.format(BUTTON_MASK, ""));
         button.setMinWidth(250);
         button.setPrefWidth(button.getMinWidth());
         rootNode.getChildren().addAll(cb, tf, button);
@@ -58,6 +60,7 @@ public class JFXComboBox extends Application {
         button.setText(String.format(BUTTON_MASK, tf.getText()));
         TextField output = new TextField();
         output.setEditable(false);
+        output.setPromptText("Поле не редактируется");
         rootNode.getChildren().add(output);
         cb.setOnAction(new EventHandler<ActionEvent>() {
             @Override
