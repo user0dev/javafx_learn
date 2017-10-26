@@ -7,14 +7,17 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 
 
 /**
@@ -22,54 +25,90 @@ import javafx.stage.Stage;
  */
 public class Print extends Application {
 
+    public static Double MARGIN = 17.0;
+
     @Override
     public void start(Stage stage) {
-//        ObservableSet<Printer> printers = Printer.getAllPrinters();
-//        for (Printer printer : printers) {
-//            System.out.println(printer);
-//        }
-//        Printer defPrint = Printer.getDefaultPrinter();
-//        if (defPrint == null) {
-//            System.err.println("There isn't default printer");
-//            System.exit(1);
-//        }
-//        PrinterAttributes pa = defPrint.getPrinterAttributes();
-//        System.out.println(pa.getSupportedCollations());
-//        System.out.println(pa.getSupportedPageOrientations());
-//        System.out.println(pa.getSupportedPapers());
-//        System.out.println(pa.getSupportedPaperSources());
-//        System.out.println(pa.getSupportedPrintColors());
-//        System.out.println(pa.getSupportedPrintSides());
-//        System.out.println(pa.getSupportedPrintQuality());
-//        System.out.println(pa.getMaxCopies());
+        ObservableSet<Printer> printers = Printer.getAllPrinters();
+        for (Printer printer : printers) {
+            System.out.println(printer);
+        }
+        Printer defPrint = Printer.getDefaultPrinter();
+        if (defPrint == null) {
+            System.err.println("There isn't default printer");
+            System.exit(1);
+        }
+        System.out.println("Default printer: " + defPrint.getName());
+        PrinterAttributes pa = defPrint.getPrinterAttributes();
+        System.out.println(pa.getSupportedCollations());
+        System.out.println(pa.getSupportedPageOrientations());
+        System.out.println(pa.getSupportedPapers());
+        System.out.println(pa.getSupportedPaperSources());
+        System.out.println(pa.getSupportedPrintColors());
+        System.out.println(pa.getSupportedPrintSides());
+        System.out.println(pa.getSupportedPrintQuality());
+        System.out.println(pa.getMaxCopies());
+
+        PageLayout pageLayout = defPrint.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, MARGIN, MARGIN, MARGIN, MARGIN);
+        System.out.println(pageLayout.getPrintableHeight());
+        System.out.println(pageLayout.getPrintableWidth());
+        PrinterJob printerJob = PrinterJob.createPrinterJob();
+        JobSettings jobSettings = printerJob.getJobSettings();
+        jobSettings.setPageLayout(pageLayout);
+        System.out.println(jobSettings);
+
+
+//        GridPane gridPane = new GridPane();
 //
-//        PageLayout pageLayout = defPrint.createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM);
-//        System.out.println(pageLayout.getPrintableHeight());
-//        System.out.println(pageLayout.getPrintableWidth());
-//        PrinterJob printerJob = PrinterJob.createPrinterJob();
-//        JobSettings jobSettings = printerJob.getJobSettings();
+//        Canvas canvas = new Canvas(200, 200);
 //
-//        System.out.println(jobSettings);
+//        GraphicsContext gc = canvas.getGraphicsContext2D();
+//
+//
+//        gc.setFill(Color.WHITE);
+//        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+//        gc.setFill(Color.BLACK);
+//        gc.setTextAlign(TextAlignment.RIGHT);
+//        gc.setTextBaseline(VPos.TOP);
+//        gc.fillText("8A", canvas.getWidth() - 10, 10);
+//        //gc.text
+//
+//        gridPane.add(canvas, 0, 0);
+//        //gridPane
+//
 
-        GridPane gridPane = new GridPane();
-
-        Canvas canvas = new Canvas(200, 200);
-
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        Pane pane = new Pane();
 
 
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        gc.setFill(Color.BLACK);
-        gc.setTextAlign(TextAlignment.RIGHT);
-        gc.setTextBaseline(VPos.TOP);
-        gc.fillText("8A", canvas.getWidth() - 10, 10);
-        gc.text
+        stage.setScene(new Scene(pane, pageLayout.getPrintableWidth(), pageLayout.getPrintableHeight()));
 
-        gridPane.add(canvas, 0, 0);
-        //gridPane
+        Double w = pageLayout.getPrintableWidth();
+        Double h = pageLayout.getPrintableHeight();
 
-        stage.setScene(new Scene(gridPane));
+
+        ArrayList<Line> lines = new ArrayList<>();
+
+        lines.add(new Line(w / 2, 0, w / 2, h));
+
+        for (int i = 1; i <= 3; i++) {
+            lines.add(new Line(0, h))
+        }
+
+        for (Line ln : lines) {
+            ln.setStrokeWidth(0.2);
+            ln.getStrokeDashArray().addAll(2.0, 6.0);
+        }
+
+        pane.getChildren().addAll(lines);
+
+//        System.out.println("Sending print job...");
+//        boolean printed = printerJob.printPage(pageLayout, pane);
+//        if (printed) {
+//            System.out.println("Ending job");
+//            printerJob.endJob();
+//        } else {
+//            System.out.println("Не удалось создать задание на печать");
+//        }
 
         stage.show();
 
