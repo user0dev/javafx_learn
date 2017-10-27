@@ -26,18 +26,18 @@ import java.util.ArrayList;
  */
 public class Print extends Application {
 
-    public static Double MARGIN = 20.0;
+    public static double MARGIN = 20.0;
 
     public ArrayList<Text> genAnaliz(double x, double y, double width, double height, String numClass, String name, String age) {
         ArrayList<Text> list = new ArrayList<>();
 
         Font font = Font.font("serif", 16);
 
-        Double left = x + MARGIN;
-        Double top = y + MARGIN;
+        double left = x + MARGIN;
+        double top = y + MARGIN;
 
-        Double realW = width - MARGIN * 2;
-        Double realH = height - MARGIN * 2;
+        double realW = width - MARGIN * 2;
+        double realH = height - MARGIN * 2;
 
         Text tNumClass = new Text(left, top, numClass);
         tNumClass.setTextAlignment(TextAlignment.RIGHT);
@@ -49,7 +49,7 @@ public class Print extends Application {
         analiz.setFont(font);
         list.add(analiz);
 
-        Text tName = new Text(left + realW / 10, analiz.getY() + analiz.getLayoutBounds().getHeight() + realH / 40, name);
+        Text tName = new Text(left, analiz.getY() + analiz.getLayoutBounds().getHeight() + realH / 40, name);
         tName.setTextAlignment(TextAlignment.LEFT);
         tName.setFont(font);
         list.add(tName);
