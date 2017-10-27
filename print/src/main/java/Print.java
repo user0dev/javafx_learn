@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
@@ -25,7 +26,48 @@ import java.util.ArrayList;
  */
 public class Print extends Application {
 
-    public static Double MARGIN = 17.0;
+    public static Double MARGIN = 20.0;
+
+    public ArrayList<Text> genAnaliz(double x, double y, double width, double height, String numClass, String name, String age) {
+        ArrayList<Text> list = new ArrayList<>();
+
+        Font font = Font.font("serif", 16);
+
+        Double left = x + MARGIN;
+        Double top = y + MARGIN;
+
+        Double realW = width - MARGIN * 2;
+        Double realH = height - MARGIN * 2;
+
+        Text tNumClass = new Text(left, top, numClass);
+        tNumClass.setTextAlignment(TextAlignment.RIGHT);
+        tNumClass.setFont(font);
+        list.add(tNumClass);
+
+        Text analiz = new Text(left, y + height / 3, "Анализ мочи");
+        analiz.setTextAlignment(TextAlignment.CENTER);
+        analiz.setFont(font);
+        list.add(analiz);
+
+        Text tName = new Text(left + realW / 10, analiz.getY() + analiz.getLayoutBounds().getHeight() + realH / 40, name);
+        tName.setTextAlignment(TextAlignment.LEFT);
+        tName.setFont(font);
+        list.add(tName);
+
+        Text tAge = new Text(left, tName.getY() + tName.getLayoutBounds().getHeight() + realH / 40, age);
+        tAge.setTextAlignment(TextAlignment.RIGHT);
+        tAge.setFont(font);
+        list.add(tAge);
+
+        for (Text t : list) {
+            t.setWrappingWidth(realW);
+            t.setTextOrigin(VPos.TOP);
+
+        }
+
+
+        return list;
+    }
 
     @Override
     public void start(Stage stage) {
@@ -85,14 +127,21 @@ public class Print extends Application {
         Double w = pageLayout.getPrintableWidth();
         Double h = pageLayout.getPrintableHeight();
 
+        Double fullH = h + MARGIN * 2;
+        Double fullW = w + MARGIN * 2;
+
+        Double left = -MARGIN;
+        Double top = -MARGIN;
+
 
         ArrayList<Line> lines = new ArrayList<>();
 
         lines.add(new Line(w / 2, 0, w / 2, h));
+        lines.add(new Line(0, h / 2, w, h / 2));
 
-        for (int i = 1; i <= 3; i++) {
-            lines.add(new Line(0, h))
-        }
+//        for (int i = 1; i <= 3; i++) {
+//            lines.add(new Line(0, right + fullH * i / 4, w, right + fullH * i / 4));
+//        }
 
         for (Line ln : lines) {
             ln.setStrokeWidth(0.2);
@@ -101,14 +150,19 @@ public class Print extends Application {
 
         pane.getChildren().addAll(lines);
 
-//        System.out.println("Sending print job...");
-//        boolean printed = printerJob.printPage(pageLayout, pane);
-//        if (printed) {
-//            System.out.println("Ending job");
-//            printerJob.endJob();
-//        } else {
-//            System.out.println("Не удалось создать задание на печать");
-//        }
+        pane.getChildren().addAll(genAnaliz(left, top, fullW / 2, fullH / 2, "8a", "Артамонова Яна", "14 лет"));
+        pane.getChildren().addAll(genAnaliz(left, h / 2, fullW / 2, fullH / 2, "8a", "Волков Тимур", "14 лет"));
+        pane.getChildren().addAll(genAnaliz(w / 2, top, fullW / 2, fullH / 2, "8a", "Ефимова Юлия", "14 лет"));
+        pane.getChildren().addAll(genAnaliz(w / 2, h / 2, fullW / 2, fullH / 2, "8a", "Золотова Оксана", "14 лет"));
+
+        System.out.println("Sending print job...");
+        boolean printed = printerJob.printPage(pageLayout, pane);
+        if (printed) {
+            System.out.println("Ending job");
+            printerJob.endJob();
+        } else {
+            System.out.println("Не удалось создать задание на печать");
+        }
 
         stage.show();
 
